@@ -1,0 +1,19 @@
+/*
+    ** All elements border-box
+*/
+*,
+*:before,
+*::after {
+    box-sizing: border-box;
+}
+
+/*
+    ** Root element font size
+    ** No default margins and paddings
+*/
+html,
+body {
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}

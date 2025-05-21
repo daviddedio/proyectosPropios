@@ -1,0 +1,9 @@
+.drag-n-drop{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+#proyectos{
+    width: 100%;
+}

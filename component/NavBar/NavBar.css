@@ -1,0 +1,51 @@
+.navbar{
+    width: 100%;
+    height: 40px;
+    background-color: green;
+    box-sizing: border-box;
+    display:flex;
+}
+
+.select-proyect , .options-items{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.select-proyect{
+    margin-left: 5px;
+}
+
+.options-items>ul{
+    display: flex;
+    list-style: none;
+}
+
+.options-items>ul>li{
+    margin: 0px 5px;
+    border: 1px solid red;
+    height: 40px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.options-items>ul>li:active{
+    background-color: red;
+}
+
+.select-login{
+    display: flex;
+    flex-direction: column;
+    float: right;
+}
+
+.enable{
+    background-color: red;
+}
+
+.disable{
+    background-color: none;
+}

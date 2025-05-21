@@ -1,0 +1,19 @@
+.column{
+    display: flex;
+    flex-direction: column;
+    background-color: gainsboro;
+    width: 400px;
+    min-height: 100px;
+    padding: 12px;
+    border-radius: 8px;
+    border-top:7px solid;
+    box-shadow: 0 8px 16px rgba(#333,0.1);
+}
+
+.title-column{
+    text-align: center;
+    background-color: black;
+    padding: 5px;
+    width: 100%;
+    color:white
+}
