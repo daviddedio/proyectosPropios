@@ -4,28 +4,14 @@ import { getAllData, editItemState, addItem, deleteItem } from '../../FireBase/c
 
 import { ComponenteCarga } from '../../component/ComponenteCarga/ComponenteCarga'
 
-export const ListadoItems = ({ id }) => {
+export const ListadoItems = ({ id, items, funcionItems }) => {
     const [loadingItems, setloadingItems] = useState(false)
-    const [datosItems, setDatosItems] = useState([])
+    const [datosItems, setDatosItems] = useState(items)
     const [errorItems, setErrorItems] = useState('')
 
     const [actualizacion, setActualizacion] = useState(false)
 
     const [nuevoItem, setNuevoItem] = useState('')
-
-    const getItemsForActions = async () => {
-        setloadingItems(true)
-        try {
-            const datos = await getAllData('Items')
-            setDatosItems(datos.filter(e => e.idItemAction == id))
-        } catch (error) {
-            setErrorItems(error)
-        } finally {
-            setloadingItems(false)
-        }
-    }
-
-    useEffect(() => { getItemsForActions() }, [actualizacion])
 
     const actualizarNuevoItem = (e) => {
         setNuevoItem(e.target.value)
@@ -37,8 +23,10 @@ export const ListadoItems = ({ id }) => {
         const res = await addItem(obj)
         console.log(res.id)
         if (res.id) {
-            const newObj = { ...obj, id: res }
+            const newObj = { ...obj, id: res.id }
+            console.log(newObj)
             setDatosItems([...datosItems, newObj])
+            funcionItems([...datosItems, newObj])
         } else {
             setErrorItems(res)
         }
@@ -50,10 +38,11 @@ export const ListadoItems = ({ id }) => {
         const invertir = checked ? true : false
         const revisionItems = datosItems.map(e => e.id === value ? { ...e, estado: invertir } : e)
         setDatosItems(revisionItems)
-
+        funcionItems(revisionItems)
         const res = await editItemState(value, invertir)
         if (res != 'ok') {
             setDatosItems(datosItems.map(e => e.id === value ? { ...e, estado: checked } : e))
+            funcionItems(datosItems.map(e => e.id === value ? { ...e, estado: checked } : e))
             setActualizacion(!actualizacion)
             setErrorItems(res)
         }
@@ -63,10 +52,12 @@ export const ListadoItems = ({ id }) => {
         const datosFijos = datosItems
         const datosFiltrados = datosItems.filter(e => e.id != id)
         setDatosItems(datosFiltrados)
+        funcionItems(datosFiltrados)
 
         const res = await deleteItem(id)
         if (res != 'ok') {
             setDatosItems(datosFijos)
+            funcionItems(datosFijos)
             setErrorItems(res)
         }
     }
@@ -74,21 +65,23 @@ export const ListadoItems = ({ id }) => {
     return (
         <>
             <h2 className='titulo-items-personalizados'>Items de accion</h2>
-            <div className="inputPack">
+            <div className="list-data-conteiner">
                 <div className="form-items">
                     <label htmlFor="items">Cargar item: </label>
                     <div className="input-text">
-                        <input type="text" name="items" id="items" value={nuevoItem} onChange={actualizarNuevoItem} />
-                        <a onClick={agregarItem}>Add</a>
+                        <input type="text" name="items" id="items" value={nuevoItem}
+                            onChange={actualizarNuevoItem} />
+                        <a onClick={agregarItem}><i className="fa-solid fa-plus"></i></a>
                     </div>
                 </div>
                 <ul className='listado-items'>
                     {loadingItems ? <ComponenteCarga /> : datosItems.map((e, i) =>
                         <li key={i}>
+                            <input type="checkbox" name="item" id={i} checked={e.estado} value={e.id}
+                                onChange={(e) => editarEstadoItem(e.target)} />
                             <p>{e.descripcion}</p>
                             <div className="opciones-items-delete">
-                                <input type="checkbox" name="item" id={i} checked={e.estado} value={e.id}
-                                    onChange={(e) => editarEstadoItem(e.target)} />
+                                <p>"Eliminar tarea: " {e.id}</p>
                                 <i className="fa-solid fa-trash" onClick={() => eliminarItem(e.id)}></i>
                             </div>
                         </li>)}

@@ -9,7 +9,6 @@ export const UseForm = (initialForm = {}) => {
         setFormState(
             {...formState,[name]:value}
         )
-        console.log(formState)
     }
     return{
         formState, onInputTextChange, setFormState

@@ -1,3 +1,10 @@
+.list-data-conteiner {
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 .listado-items {
     min-height: 50px;
     transition: all 0.3s ease-in-out;
@@ -9,8 +16,21 @@
     margin: 0px;
 }
 
+.listado-items>li:nth-child(odd){
+    background-color: gainsboro;
+}
+
 .listado-items>li {
-    border-bottom: 1px solid black;
+
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.listado-items>li>p {
+    width: 200%;
+    margin: 0px;
 }
 
 .form-items {
@@ -25,11 +45,13 @@
 }
 
 .input-text>a {
-    background-color: red;
     width: auto;
     margin: 10px;
     padding: 0px 5px;
-    border: 1px solid black;
+}
+
+.input-text>a:active{
+    background-color: red;
 }
 
 .form-items {
@@ -42,8 +64,12 @@
 
 .opciones-items-delete {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
+}
+
+.opciones-items-delete>p{
+    margin: 0px;
 }
 
 .titulo-items-personalizados {

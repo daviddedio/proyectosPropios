@@ -77,10 +77,17 @@ export const deleteItem = async (id) => {
 }
 
 /*CUD Proyectos - R es general*/
-export const addProyecto = () => {
-
+export const addProyecto = async(obj) => {
+    const docRef = collection(db, 'Proyectos')
+    const res = await addDoc(docRef, obj)
+    return res
 }
 
-export const deleteProyecto = () => {
-
+export const deleteProyecto = async(id) => {
+    try {
+        await deleteDoc(doc(db, 'Proyectos', id))
+        return 'ok'
+    } catch (error) {
+        return (error.message)
+    }
 }

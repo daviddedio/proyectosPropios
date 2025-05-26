@@ -7,3 +7,12 @@
 #proyectos{
     width: 100%;
 }
+
+.descripcion-proyecto{
+    text-align: center;
+}
+
+.descripcion-proyecto>h2{
+    margin: 0px;
+    padding: 0px;
+}

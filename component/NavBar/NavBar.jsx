@@ -1,14 +1,14 @@
 import './NavBar.css'
 import { useState } from 'react'
-export const NavBar = ({ children, funcionAddItem}) => {
+export const NavBar = ({ children, funcionAddItem, functionReviewProyect}) => {
 
     const addItem = ()=>{
         console.log('hola')
         funcionAddItem()
     }
 
-    const addProyect = ()=>{
-        
+    const proyectManager = ()=>{
+        functionReviewProyect()
     }
 
     return (
@@ -16,7 +16,7 @@ export const NavBar = ({ children, funcionAddItem}) => {
             <div className="options-items">
                 <ul>
                     <li onClick={()=>addItem()}>Item de accion</li>
-                    <li onClick={()=>null}>Proyecto</li>
+                    <li onClick={()=>proyectManager()}>Proyecto</li>
                 </ul>
             </div>
             <div className="select-proyect">

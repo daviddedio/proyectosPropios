@@ -3,7 +3,6 @@ import { UseForm } from '../UseForm'
 import { useEffect, useState } from 'react'
 import { getAllData, updateItemAction, addItemAction } from '../../FireBase/conexion'
 import { useGlobalContext } from '../../context/Context'
-import { ListadoItems } from '../ListadoItems/ListadoItems'
 
 export const CreateUpdateForm = ({ accion, Id, Titulo, Descripcion, Plazo, Proyecto, Estado, funcion }) => {
     const { setOpenModal } = useGlobalContext()
@@ -45,7 +44,7 @@ export const CreateUpdateForm = ({ accion, Id, Titulo, Descripcion, Plazo, Proye
             setFormState({...formState, proyecto:"undefined"})
         }
         
-        if (accion === "Actualizar"){
+        if (accion === "Editar"){
             const res = await updateItemAction(Id, formState)
             if (res != 'ok') {
                 alert(res)

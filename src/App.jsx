@@ -1,9 +1,10 @@
 import './App.css'
 import { DragBody } from '../component/DragBody/DragBody'
+import { Header } from '../component/Header/Header'
 
 export const App = () => {
     return (<>
-        <h1>Acciones</h1>
+        <Header/>
         <br />
         <DragBody />
     </>

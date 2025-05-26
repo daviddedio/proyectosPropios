@@ -5,7 +5,9 @@ import { getAllData } from '../../FireBase/conexion'
 import { useEffect, useState } from 'react'
 import { useGlobalContext } from '../../context/Context'
 import { CreateUpdateForm } from '../../Formularios/CreateUpdateForm/CreateUpdateForm'
+import { GestionProyectos } from '../../Formularios/GestionProyectos/GestionProyectos'
 import { NavBar } from '../NavBar/NavBar'
+import { ComponenteCarga } from '../ComponenteCarga/ComponenteCarga'
 
 /*Estados > To do - En curso - Finalizado */
 
@@ -23,6 +25,7 @@ export const DragBody = () => {
     const [reload, setReload] = useState(false)
     const [opcionProyecto, setOptionProyecto] = useState([])
     const [opcionDato, setOpcionDato] = useState('')
+    const [descripcion, setDescripcion] = useState('')
 
     const getData = async (filtros) => {
         setLoading(true)
@@ -39,44 +42,53 @@ export const DragBody = () => {
     const setProyect = async () => {
         try {
             const datos = await getAllData('Proyectos')
+
             setOptionProyecto(datos)
         } catch (error) {
             setError(error.message)
         }
     }
 
-    const actualizarItemsActions = async (value) => {
-        console.log(opcionDato)
-        setOpcionDato(value)
-        await getData(value)
+    const actualizarItemsActions = async (e) => {
+        const {value} = e.target
+        const jsonParse = JSON.parse(value)
+
+        setDescripcion(jsonParse.descr)
+        setOpcionDato(jsonParse.nombre)
+        await getData(jsonParse.nombre)
     }
 
     useEffect(() => {
         setProyect()
-        actualizarItemsActions(opcionDato)
     }, [reload])
 
     return (
         <>
-            <NavBar funcionAddItem={() => { mostrarModal(<CreateUpdateForm accion={"Nuevo"} Titulo={""} Descripcion={""} Plazo={""} Proyecto={""} Estado={""} Items={""} Id={""} funcion={[setReload, reload]} />) }}>
-                <select name="proyectos" id="proyectos" onChange={(e) => actualizarItemsActions(e.target.value)}>
+            <NavBar funcionAddItem={() => { mostrarModal(<CreateUpdateForm accion={"Nuevo"} Titulo={""} Descripcion={""} Plazo={""} Proyecto={""} Estado={""} Items={""} Id={""} funcion={[setReload, reload]} />) }} functionReviewProyect={()=>{mostrarModal(<GestionProyectos funcion={[setReload, reload]}/>)}} >
+                <select name="proyectos" id="proyectos" onChange={actualizarItemsActions}>
                     {
-                        opcionProyecto && opcionProyecto.map((e, i) => <option key={i} value={e.nombre} >{e.nombre}</option>)
+                        opcionProyecto && opcionProyecto.map((e, i) => <option key={i} value={JSON.stringify({nombre:e.nombre,descr:e.descripcion})}>{e.nombre}</option>)
                     }
                 </select>
             </NavBar>
             <hr />
+            <div className='descripcion-proyecto'>
+                <h2>Objetivo del proyecto</h2>
+                <h3>
+                    {descripcion && descripcion}
+                </h3>
+            </div>
             <div className="drag-n-drop">
                 <Column nombreColumn={"Para hacer"} id={1} datos={data} funcion={setData}>
-                    {loading ? <p>cargando</p> : data.map((e, i) => e.estado == "Para hacer" && <ActionCard key={i} id={e.id} titulo={e.titulo} descripcion={e.descripcion} plazo={e.plazo} proyecto={e.proyecto} estado={e.estado} items={e.items} funcion={[setReload, reload]} />)}
+                    {loading ? <ComponenteCarga/> : data.map((e, i) => e.estado == "Para hacer" && <ActionCard key={i} id={e.id} titulo={e.titulo} descripcion={e.descripcion} plazo={e.plazo} proyecto={e.proyecto} estado={e.estado} items={e.items} funcion={[setReload, reload]} />)}
                 </Column>
 
                 <Column nombreColumn={"En proceso"} id={2} datos={data} funcion={setData}>
-                    {loading ? <p>cargando</p> : data.map((e, i) => e.estado == "En proceso" && <ActionCard key={i} id={e.id} titulo={e.titulo} descripcion={e.descripcion} plazo={e.plazo} proyecto={e.proyecto} estado={e.estado} items={e.items} funcion={[setReload, reload]} />)}
+                    {loading ? <ComponenteCarga/> : data.map((e, i) => e.estado == "En proceso" && <ActionCard key={i} id={e.id} titulo={e.titulo} descripcion={e.descripcion} plazo={e.plazo} proyecto={e.proyecto} estado={e.estado} items={e.items} funcion={[setReload, reload]} />)}
                 </Column>
 
                 <Column nombreColumn={"Finalizados"} id={3} datos={data} funcion={setData}>
-                    {loading ? <p>cargando</p> : data.map((e, i) => e.estado == "Finalizados" && <ActionCard key={i} id={e.id} titulo={e.titulo} descripcion={e.descripcion} plazo={e.plazo} proyecto={e.proyecto} estado={e.estado} items={e.items} funcion={[setReload, reload]} />)}
+                    {loading ? <ComponenteCarga/> : data.map((e, i) => e.estado == "Finalizados" && <ActionCard key={i} id={e.id} titulo={e.titulo} descripcion={e.descripcion} plazo={e.plazo} proyecto={e.proyecto} estado={e.estado} items={e.items} funcion={[setReload, reload]} />)}
                 </Column>
             </div>
         </>

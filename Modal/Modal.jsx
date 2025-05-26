@@ -13,9 +13,7 @@ export const Modal = () => {
     return createPortal(
         <div className="overlay">
             <div className="modalx" ref={modalRef}>
-                <div className="upline">
-                    <button className="closeButton" onClick={closeModal}>X</button>
-                </div>
+                <div className="upline" onClick={closeModal}></div>
                 <div className="modalComponent">
                     {componente}
                 </div>
